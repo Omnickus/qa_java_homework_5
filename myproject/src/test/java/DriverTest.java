@@ -13,6 +13,7 @@ import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import io.github.bonigarcia.wdm.WebDriverManager;
+
 // Для логирования
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -38,7 +39,8 @@ public class DriverTest {
     private String xpathBirthDate = "//*[@id='birthdate']";
 
     private String xpathLanguageLevelDropdown = "//*[@id='language_level']";
-    private String xpathLanguageLevelDropdownOptionAdvanced = xpathLanguageLevelDropdown + "/option[text()='Продвинутый']";
+    private String xpathLanguageLevelDropdownOptionAdvanced = xpathLanguageLevelDropdown
+            + "/option[text()='Продвинутый']";
 
     private String xpathButtonSubmitForm = "//*[@id='registrationForm']/input[@type='submit']";
 
@@ -75,16 +77,16 @@ public class DriverTest {
             EdgeOptions options = new EdgeOptions();
             options.addArguments("--remote-allow-origins=*");
             options.addArguments("--no-sandbox");
-            options.addArguments("--disable-dev-shm-usage");
-            options.addArguments(System.getProperty("launchFlag", "--start-maximized")); // --kiosk --headless --start-maximized
+            options.addArguments(System.getProperty("launchFlag", "--start-maximized")); // --kiosk --headless
+                                                                                         // --start-maximized
             driver = new EdgeDriver(options);
         }
         if (browser.equals("chrome")) {
             ChromeOptions options = new ChromeOptions();
             options.addArguments("--remote-allow-origins=*");
             options.addArguments("--no-sandbox");
-            options.addArguments("--disable-dev-shm-usage");
-            options.addArguments(System.getProperty("launchFlag", "--start-maximized")); // --kiosk --headless --start-maximized
+            options.addArguments(System.getProperty("launchFlag", "--start-maximized")); // --kiosk --headless
+                                                                                         // --start-maximized
             driver = new ChromeDriver(options);
         }
 
@@ -144,7 +146,8 @@ public class DriverTest {
         String text_btith_date_for_check = "2025-11-11";
         WebElement input_birth_date = driver.findElement(By.xpath(this.xpathBirthDate));
         input_birth_date.sendKeys(text_birth_date);
-        assertEquals(text_btith_date_for_check, input_birth_date.getAttribute("value"), "Дата рождения должна совпадать");
+        assertEquals(text_btith_date_for_check, input_birth_date.getAttribute("value"),
+                "Дата рождения должна совпадать");
         logger.info("Заполнил поле 'Дата рождения' значением: {}", text_birth_date);
 
         logger.info("Находим и раскрываем выпадающий список с уровнями алвдения языка");
@@ -160,17 +163,20 @@ public class DriverTest {
         WebElement input_submit = driver.findElement(By.xpath(this.xpathButtonSubmitForm));
         input_submit.click();
 
-        
         WebElement output_data = driver.findElement(By.xpath(this.xpathOutputRegistrationData));
         String output_data_inner_text = output_data.getText();
         logger.info("Данные в поле output: {}", output_data_inner_text);
         logger.info("Проверяю, что логин пользоватля верно указан");
-        
-        assertTrue(output_data_inner_text.contains(String.format("Имя пользователя: %s", text_username)), "Неверное имя пользвоателя в окне с выводом данных");
-        assertTrue(output_data_inner_text.contains(String.format("Электронная почта: %s", text_email)), "Неверное электронная почта пользвоателя в окне с выводом данных");
-        assertTrue(output_data_inner_text.contains(String.format("Дата рождения: %s", text_btith_date_for_check)), "Неверная дата рождения пользвоателя в окне с выводом данных");
-        assertTrue(output_data_inner_text.contains(String.format("Уровень языка: %s", option.getAttribute("value"))), "Не верный уровень языка пользвоателя в окне с выводом данных");
-        
+
+        assertTrue(output_data_inner_text.contains(String.format("Имя пользователя: %s", text_username)),
+                "Неверное имя пользвоателя в окне с выводом данных");
+        assertTrue(output_data_inner_text.contains(String.format("Электронная почта: %s", text_email)),
+                "Неверное электронная почта пользвоателя в окне с выводом данных");
+        assertTrue(output_data_inner_text.contains(String.format("Дата рождения: %s", text_btith_date_for_check)),
+                "Неверная дата рождения пользвоателя в окне с выводом данных");
+        assertTrue(output_data_inner_text.contains(String.format("Уровень языка: %s", option.getAttribute("value"))),
+                "Не верный уровень языка пользвоателя в окне с выводом данных");
+
         logger.info("Тест успешно завершен");
     }
 }
