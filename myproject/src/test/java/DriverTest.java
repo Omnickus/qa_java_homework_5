@@ -1,5 +1,3 @@
-package otus.homework;
-
 import java.time.Duration;
 
 import org.junit.jupiter.api.AfterEach;
@@ -33,18 +31,18 @@ public class DriverTest {
     private final Duration PAGE_LOAD_TIMEOUT = Duration.ofSeconds(30);
 
     // Известные элементы
-    String xpathUsername = "//*[@id='username']";
-    String xpathEmail = "//*[@id='email']";
-    String xpathPassword = "//*[@id='password']";
-    String xpathPasswordConfirm = "//*[@id='confirm_password']";
-    String xpathBirthDate = "//*[@id='birthdate']";
+    private String xpathUsername = "//*[@id='username']";
+    private String xpathEmail = "//*[@id='email']";
+    private String xpathPassword = "//*[@id='password']";
+    private String xpathPasswordConfirm = "//*[@id='confirm_password']";
+    private String xpathBirthDate = "//*[@id='birthdate']";
 
-    String xpathLanguageLevelDropdown = "//*[@id='language_level']";
-    String xpathLanguageLevelDropdownOptionAdvanced = xpathLanguageLevelDropdown + "/option[text()='Продвинутый']";
+    private String xpathLanguageLevelDropdown = "//*[@id='language_level']";
+    private String xpathLanguageLevelDropdownOptionAdvanced = xpathLanguageLevelDropdown + "/option[text()='Продвинутый']";
 
-    String xpathButtonSubmitForm = "//*[@id='registrationForm']/input[@type='submit']";
+    private String xpathButtonSubmitForm = "//*[@id='registrationForm']/input[@type='submit']";
 
-    String xpathOutputRegistrationData = "//*[@id='output']";
+    private String xpathOutputRegistrationData = "//*[@id='output']";
 
     @BeforeAll
     public static void driver_setup() {
@@ -63,9 +61,8 @@ public class DriverTest {
                 }
             } catch (Exception e) {
                 logger.error("Возникла ошибка: {}", e.getMessage());
-                logger.info("Будет использован браузер по умолчанию edge");
-                // Указываем путь к драйверу по дефолту вручную
-                System.setProperty("webdriver.edge.driver","C:\\Users\\Omnic\\Documents\\Курсы\\ОТУС\\edgedriver_win64\\msedgedriver.exe");
+                System.out.println(e);
+                System.exit(1);
             }
         }
     }
@@ -79,7 +76,7 @@ public class DriverTest {
             options.addArguments("--remote-allow-origins=*");
             options.addArguments("--no-sandbox");
             options.addArguments("--disable-dev-shm-usage");
-            options.addArguments("--start-maximized");
+            options.addArguments(System.getProperty("launchFlag", "--start-maximized")); // --kiosk --headless --start-maximized
             driver = new EdgeDriver(options);
         }
         if (browser.equals("chrome")) {
@@ -87,7 +84,7 @@ public class DriverTest {
             options.addArguments("--remote-allow-origins=*");
             options.addArguments("--no-sandbox");
             options.addArguments("--disable-dev-shm-usage");
-            options.addArguments("--start-maximized");
+            options.addArguments(System.getProperty("launchFlag", "--start-maximized")); // --kiosk --headless --start-maximized
             driver = new ChromeDriver(options);
         }
 
@@ -106,8 +103,6 @@ public class DriverTest {
         driver.manage().timeouts().implicitlyWait(IMPLICIT_WAIT);
         // Таймаут загрузки страницы
         driver.manage().timeouts().pageLoadTimeout(PAGE_LOAD_TIMEOUT);
-        // Таймаут для выполнения скриптов
-        driver.manage().timeouts().scriptTimeout(Duration.ofSeconds(10));
     }
 
     @AfterEach
