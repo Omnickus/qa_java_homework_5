@@ -39,8 +39,7 @@ public class DriverTest {
     private String xpathBirthDate = "//*[@id='birthdate']";
 
     private String xpathLanguageLevelDropdown = "//*[@id='language_level']";
-    private String xpathLanguageLevelDropdownOptionAdvanced = xpathLanguageLevelDropdown
-            + "/option[text()='Продвинутый']";
+    private String xpathLanguageLevelDropdownOptionAdvanced = xpathLanguageLevelDropdown + "/option[text()='Продвинутый']";
 
     private String xpathButtonSubmitForm = "//*[@id='registrationForm']/input[@type='submit']";
 
@@ -60,6 +59,10 @@ public class DriverTest {
                 if (System.getProperty("browser").equals("chrome")) {
                     logger.info("Выбран драйвер chrome");
                     WebDriverManager.chromedriver().setup();
+                }
+                if (System.getProperty("browser").equals("firefox")) {
+                    logger.info("Выбран драйвер chrome");
+                    WebDriverManager.firefoxdriver().setup();
                 }
             } catch (Exception e) {
                 logger.error("Возникла ошибка: {}", e.getMessage());
@@ -86,6 +89,14 @@ public class DriverTest {
             options.addArguments("--remote-allow-origins=*");
             options.addArguments("--no-sandbox");
             options.addArguments(System.getProperty("launchFlag", "--start-maximized")); // --kiosk --headless
+                                                                                         // --start-maximized
+            driver = new ChromeDriver(options);
+        }
+        if (browser.equals("firefox")) {
+            ChromeOptions options = new ChromeOptions();
+            options.addArguments("--remote-allow-origins=*");
+            options.addArguments("--no-sandbox");
+            // options.addArguments(System.getProperty("launchFlag", "--start-maximized")); // --kiosk --headless
                                                                                          // --start-maximized
             driver = new ChromeDriver(options);
         }
